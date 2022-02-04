@@ -5,7 +5,6 @@ import ru.yandex.practicum.tasktraker.tasks.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 public class Manager {
     private HashMap<Integer, Task> taskHashMap = new HashMap<>();
     private HashMap<Integer, Epic> epicHashMap = new HashMap<>();
@@ -79,12 +78,16 @@ public class Manager {
 
     public void deleteEpic(int epicId) {
         Epic epic = epicHashMap.get(epicId);
+        ArrayList<Integer> keyList = new ArrayList<>();
         for (Subtask subtask : epic.getSublist()) {
             for (int key : subtaskHashMap.keySet()) {
                 if (subtask.equals(subtaskHashMap.get(key))) {
-                    subtaskHashMap.remove(subtask);
+                    keyList.add(key);
                 }
             }
+        }
+        for (int key : keyList) {
+            subtaskHashMap.remove(key);
         }
         epicHashMap.remove(epicId);
     }
