@@ -1,5 +1,7 @@
 package ru.yandex.practicum.tasktraker.tasks;
 
+import java.util.Objects;
+
 public class Task {
     private String taskName;
     private String taskDescription;
@@ -51,6 +53,4 @@ public class Task {
                 ", taskStatus='" + taskStatus + '\'' +
                 '}';
     }
-
-
 }

@@ -14,30 +14,34 @@ public class Epic extends Task {
         return sublist;
     }
 
-    public void setSublist(Subtask subtask) {
+    public void setSublist(ArrayList<Subtask> sublist) {
+        this.sublist = sublist;
+    }
+
+    public void addSubtaskInList(Subtask subtask) {
         sublist.add(subtask);
     }
 
     @Override
     public void setStatus() {
-        int i = 0;
-        int j = 0;
+        int countDoneStatus = 0;
+        int countNewStatus = 0;
         for (Subtask subtask : sublist) {
             if (subtask.getTaskStatus().equals("IN_PROGRESS")) {
                 setTaskStatus("IN_PROGRESS");
             }
             if (subtask.getTaskStatus().equals("DONE")) {
-                i++;
+                countDoneStatus++;
             }
             if (subtask.getTaskStatus().equals("NEW")) {
-                j++;
+                countNewStatus++;
             }
         }
-        if (i == sublist.size() && !sublist.isEmpty()) {
+        if (countDoneStatus == sublist.size() && !sublist.isEmpty()) {
             setTaskStatus("DONE");
-        } else if (i > 0 && i < sublist.size()) {
+        } else if (countDoneStatus > 0 && countDoneStatus < sublist.size()) {
             setTaskStatus("IN_PROGRESS");
-        } else if (sublist.isEmpty() || j == sublist.size()) {
+        } else if (sublist.isEmpty() || countNewStatus == sublist.size()) {
             setTaskStatus("NEW");
         }
     }
