@@ -1,7 +1,5 @@
 package ru.yandex.practicum.tasktraker.tasks;
 
-import java.util.Objects;
-
 public class Task {
     private String taskName;
     private String taskDescription;
@@ -10,6 +8,12 @@ public class Task {
     public Task(String taskName, String taskDescription) {
         this.taskName = taskName;
         this.taskDescription = taskDescription;
+    }
+
+    public Task(String taskName, String taskDescription, String taskStatus) {
+        this.taskName = taskName;
+        this.taskDescription = taskDescription;
+        this.taskStatus = taskStatus;
     }
 
     public String getTaskName() {

@@ -97,13 +97,20 @@ public class Manager {
         epicHashMap.clear();
     }
 
-    public void addSubtask(int epicId, Subtask subtask) {
-        Epic epic = epicHashMap.get(epicId);
-        if (epic != null) {
-            setId();
-            subtask.setEpicId(epicId);
-            epic.addSubtaskInList(subtask);
-            subtaskHashMap.put(id, subtask);
+    public void addSubtask(Subtask subtask) {
+        putSubtaskInEpic(subtask);
+        setId();
+        subtaskHashMap.put(id, subtask);
+
+    }
+
+    private void putSubtaskInEpic(Subtask subtask) {
+        if (subtask != null) {
+            Epic epic = epicHashMap.get(subtask.getEpicId());
+            if (epic != null) {
+                epic.addSubtaskInList(subtask);
+                epic.setStatus();
+            }
         }
     }
 
@@ -129,18 +136,16 @@ public class Manager {
 
     public ArrayList<Subtask> getAllSubtask() {
         ArrayList<Subtask> allSubList = new ArrayList<>();
-        for (Epic epic : epicHashMap.values()) {
-            for (Subtask subtask : epic.getSublist()) {
-                allSubList.add(subtask);
-            }
+        for (Subtask subtask : subtaskHashMap.values()) {
+            allSubList.add(subtask);
         }
         return allSubList;
     }
 
     private void changeSubtaskStatus(int subtaskId) {
         Subtask subtask = subtaskHashMap.get(subtaskId);
-        Epic epic = epicHashMap.get(subtask.getEpicId());
         if (subtask != null) {
+            Epic epic = epicHashMap.get(subtask.getEpicId());
             if (epic != null) {
                 subtask.setStatus();
                 int index = epic.getSublist().indexOf(subtask);
