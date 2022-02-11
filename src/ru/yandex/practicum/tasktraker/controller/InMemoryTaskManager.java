@@ -6,8 +6,8 @@ import ru.yandex.practicum.tasktraker.historic.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class InMemoryTaskManager implements TaskManager{
-    private static final HistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
+public class InMemoryTaskManager implements TaskManager {
+    private final HistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
     private final HashMap<Integer, Task> taskHashMap = new HashMap<>();
     private final HashMap<Integer, Epic> epicHashMap = new HashMap<>();
     private final HashMap<Integer, Subtask> subtaskHashMap = new HashMap<>();
@@ -169,7 +169,4 @@ public class InMemoryTaskManager implements TaskManager{
         subtaskHashMap.clear();
     }
 
-    public static HistoryManager getInMemoryHistoryManager() {
-        return inMemoryHistoryManager;
-    }
 }
