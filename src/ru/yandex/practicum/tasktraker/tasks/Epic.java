@@ -22,27 +22,28 @@ public class Epic extends Task {
         sublist.add(subtask);
     }
 
-    @Override
+
     public void setStatus() {
         int countDoneStatus = 0;
         int countNewStatus = 0;
         for (Subtask subtask : sublist) {
-            if (subtask.getTaskStatus().equals("IN_PROGRESS")) {
-                setTaskStatus("IN_PROGRESS");
+            if (subtask.getStatus().equals(TaskStatus.IN_PROGRESS)) {
+                setStatus(TaskStatus.IN_PROGRESS);
             }
-            if (subtask.getTaskStatus().equals("DONE")) {
+            if (subtask.getStatus().equals(TaskStatus.DONE)) {
                 countDoneStatus++;
             }
-            if (subtask.getTaskStatus().equals("NEW")) {
+            if (subtask.getStatus().equals(TaskStatus.NEW)) {
                 countNewStatus++;
             }
         }
         if (countDoneStatus == sublist.size() && !sublist.isEmpty()) {
-            setTaskStatus("DONE");
+            setStatus(TaskStatus.DONE);
         } else if (countDoneStatus > 0 && countDoneStatus < sublist.size()) {
-            setTaskStatus("IN_PROGRESS");
+            setStatus(TaskStatus.IN_PROGRESS);
         } else if (sublist.isEmpty() || countNewStatus == sublist.size()) {
-            setTaskStatus("NEW");
+            setStatus(TaskStatus.NEW);
         }
     }
 }
+

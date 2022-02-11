@@ -3,17 +3,17 @@ package ru.yandex.practicum.tasktraker.tasks;
 public class Task {
     private String taskName;
     private String taskDescription;
-    private String taskStatus = "NEW";
+    private TaskStatus status = TaskStatus.NEW;
 
     public Task(String taskName, String taskDescription) {
         this.taskName = taskName;
         this.taskDescription = taskDescription;
     }
 
-    public Task(String taskName, String taskDescription, String taskStatus) {
+    public Task(String taskName, String taskDescription, TaskStatus status) {
         this.taskName = taskName;
         this.taskDescription = taskDescription;
-        this.taskStatus = taskStatus;
+        this.status = status;
     }
 
     public String getTaskName() {
@@ -32,30 +32,20 @@ public class Task {
         this.taskDescription = taskDescription;
     }
 
-    public String getTaskStatus() {
-        return taskStatus;
+    public TaskStatus getStatus() {
+        return status;
     }
 
-    public void setTaskStatus(String taskStatus) {
-        this.taskStatus = taskStatus;
-    }
-
-    public void setStatus() {
-        String status = getTaskStatus();
-        if (status.equals("NEW")) {
-            setTaskStatus("IN_PROGRESS");
-        } else {
-            setTaskStatus("DONE");
-        }
+    public void setStatus(TaskStatus status) {
+        this.status = status;
     }
 
     @Override
     public String toString() {
-        return "{" +
+        return "Task{" +
                 "taskName='" + taskName + '\'' +
                 ", taskDescription='" + taskDescription + '\'' +
-                ", taskStatus='" + taskStatus + '\'' +
+                ", status=" + status +
                 '}';
     }
-
 }

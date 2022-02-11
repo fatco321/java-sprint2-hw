@@ -3,8 +3,8 @@ package ru.yandex.practicum.tasktraker.tasks;
 public class Subtask extends Task {
     private int epicId;
 
-    public Subtask(String taskName, String taskDescription, String taskStatus, int epicId) {
-        super(taskName, taskDescription, taskStatus);
+    public Subtask(String taskName, String taskDescription, TaskStatus status, int epicId) {
+        super(taskName, taskDescription, status);
         this.epicId = epicId;
     }
 
