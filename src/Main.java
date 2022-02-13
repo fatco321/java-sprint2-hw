@@ -7,7 +7,7 @@ public class Main {
 
     public static void main(String[] args) {
         TaskManager taskManager = Managers.getDefault();
-        HistoryManager historyManager = Managers.getDefaultHistory();
+        HistoryManager historyManager = taskManager.history();
         Task task = new Task("Задача 1", "Описание 1", TaskStatus.NEW);
         Epic epic = new Epic("Эпик 1", "Описание 1");
         Subtask subtask = new Subtask("Подзадача 1", "Описание 1", TaskStatus.NEW, 2);

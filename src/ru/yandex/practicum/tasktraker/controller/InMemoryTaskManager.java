@@ -2,12 +2,13 @@ package ru.yandex.practicum.tasktraker.controller;
 
 import ru.yandex.practicum.tasktraker.tasks.*;
 import ru.yandex.practicum.tasktraker.historic.*;
+import ru.yandex.practicum.tasktraker.util.Managers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class InMemoryTaskManager implements TaskManager {
-    private final HistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
+    private final HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
     private final HashMap<Integer, Task> taskHashMap = new HashMap<>();
     private final HashMap<Integer, Epic> epicHashMap = new HashMap<>();
     private final HashMap<Integer, Subtask> subtaskHashMap = new HashMap<>();
@@ -167,6 +168,11 @@ public class InMemoryTaskManager implements TaskManager {
             epic.setStatus();
         }
         subtaskHashMap.clear();
+    }
+
+    @Override
+    public HistoryManager history() {
+        return inMemoryHistoryManager;
     }
 
 }
