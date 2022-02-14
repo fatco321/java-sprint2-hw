@@ -6,6 +6,7 @@ import ru.yandex.practicum.tasktraker.util.Managers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
     private final HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
@@ -171,8 +172,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public HistoryManager history() {
-        return inMemoryHistoryManager;
+    public List<Task> history() {
+        return inMemoryHistoryManager.getHistory();
     }
 
 }

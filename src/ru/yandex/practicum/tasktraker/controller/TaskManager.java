@@ -1,9 +1,9 @@
 package ru.yandex.practicum.tasktraker.controller;
 
-import ru.yandex.practicum.tasktraker.historic.HistoryManager;
 import ru.yandex.practicum.tasktraker.tasks.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface TaskManager {
     void setId();
@@ -46,5 +46,5 @@ public interface TaskManager {
 
     void deleteAllSubtask();
 
-    HistoryManager history();
+    List<Task> history();
 }
