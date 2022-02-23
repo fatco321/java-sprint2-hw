@@ -4,6 +4,7 @@ public class Task {
     private String taskName;
     private String taskDescription;
     private TaskStatus status = TaskStatus.NEW;
+    private int id;
 
     public Task(String taskName, String taskDescription) {
         this.taskName = taskName;
@@ -40,12 +41,21 @@ public class Task {
         this.status = status;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "Task{" +
                 "taskName='" + taskName + '\'' +
                 ", taskDescription='" + taskDescription + '\'' +
                 ", status=" + status +
+                ", id=" + id +
                 '}';
     }
 }
