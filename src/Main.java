@@ -1,25 +1,41 @@
 import ru.yandex.practicum.tasktraker.controller.*;
-import ru.yandex.practicum.tasktraker.historic.HistoryManager;
 import ru.yandex.practicum.tasktraker.tasks.*;
 import ru.yandex.practicum.tasktraker.util.Managers;
 
 public class Main {
 
     public static void main(String[] args) {
-        InMemoryTaskManager taskManager = (InMemoryTaskManager) Managers.getDefault();
+        TaskManager taskManager = Managers.getDefault();
         Task task = new Task("Задача 1", "Описание 1", TaskStatus.NEW);
+        Task task1 = new Task("Задача 2", "Описание 2", TaskStatus.NEW);
         Epic epic = new Epic("Эпик 1", "Описание 1");
-        Subtask subtask = new Subtask("Подзадача 1", "Описание 1", TaskStatus.NEW, 2);
+        Epic epic1 = new Epic("Эпик 2", "Описание 2");
+        Subtask subtask = new Subtask("Подзадача 1", "Описание 1", TaskStatus.NEW, 3);
+        Subtask subtask1 = new Subtask("Подзадача 2", "Описание 2", TaskStatus.NEW, 3);
+        Subtask subtask2 = new Subtask("Подзадача 3", "Описание 3", TaskStatus.NEW, 3);
         taskManager.addTask(task);
+        taskManager.addTask(task1);
         taskManager.addEpic(epic);
+        taskManager.addEpic(epic1);
         taskManager.addSubtask(subtask);
+        taskManager.addSubtask(subtask1);
+        taskManager.addSubtask(subtask2);
         taskManager.getTask(1);
         System.out.println(taskManager.history());
-        taskManager.getEpic(2);
+        taskManager.getTask(1);
+        taskManager.getTask(2);
+        taskManager.getTask(1);
         System.out.println(taskManager.history());
-        taskManager.getSubtask(3);
-        taskManager.remove(2);
+        taskManager.getEpic(3);
+        taskManager.getSubtask(4);
+        taskManager.getSubtask(5);
+        taskManager.getSubtask(6);
+        taskManager.getEpic(4);
+        taskManager.deleteTask(2);
         System.out.println(taskManager.history());
-
+        taskManager.deleteSubtask(5);
+        System.out.println(taskManager.history());
+        taskManager.deleteEpic(3);
+        System.out.println(taskManager.history());
     }
 }

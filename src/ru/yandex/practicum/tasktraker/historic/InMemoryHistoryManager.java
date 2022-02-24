@@ -1,24 +1,38 @@
 package ru.yandex.practicum.tasktraker.historic;
 
-import org.w3c.dom.Node;
 import ru.yandex.practicum.tasktraker.tasks.Task;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 public class InMemoryHistoryManager<E extends Task> implements HistoryManager {
-    Map<Integer, Node<E>> map = new HashMap<>();
-    public Node<E> first;
-    public Node<E> last;
+    private final Map<Integer, Node<E>> nodesMap = new HashMap<>();
+    private Node<E> first;
+    private Node<E> last;
     private int size = 0;
 
     @Override
     public void add(Task task) {
-        linkLast((E) task);
+        if (nodesMap.containsKey(task.getId())) {
+            remove(task.getId());
+        }
+        nodesMap.put(task.getId(), linkLast((E) task));
     }
 
     @Override
     public List<Task> getHistory() {
-        return test();
+        return getTasks();
+    }
+
+    @Override
+    public void remove(int id) {
+        if (nodesMap.containsKey(id)) {
+            removeNode(nodesMap.get(id));
+            nodesMap.remove(id);
+        }
     }
 
     private static class Node<E> {
@@ -33,86 +47,45 @@ public class InMemoryHistoryManager<E extends Task> implements HistoryManager {
         }
     }
 
-    private void linkLast(E e) {
-        final Node<E> l = last;
-        final Node<E> newNode = new Node<>(l, e, null);
+    private Node<E> linkLast(E e) {
+        final Node<E> newLast = last;
+        final Node<E> newNode = new Node<>(newLast, e, null);
         last = newNode;
-        if (l == null)
+        if (newLast == null)
             first = newNode;
         else
-            l.next = newNode;
-        map.put(e.getId(), newNode);
+            newLast.next = newNode;
+        nodesMap.put(e.getId(), newNode);
         size++;
+        return newNode;
     }
 
-
-
-    public List<Task> getTasks() {
-        List<Task> history = new ArrayList<>();
-        for (int key : map.keySet()) {
-            history.add(map.get(key).item);
-        }
-        return history;
-    }
-
-    @Override
-    public void remove(int id) {
-        removeNode(map.get(id));
-        map.remove(id);
-    }
-
-    private void removeNode(Node<E> node){
-        /*node.item = node.next.item;
-        node.next = node.prev.prev;*/
-      /*  if(node.next == null) {
-            final E element = node.item;
-            final Node<E> prev = node.prev;
-            node.item = null;
-            node.prev = null; // help GC
-            last = prev;
-            if (prev == null)
-                first = null;
-            else
-                prev.next = null;
-            size--;
-        }*/
-        if(node.next == null || node.prev == null) {
-            final E element = node.item;
-            final Node<E> prev = node.prev;
-            node.item = null;
-            node.prev = null; // help GC
-            last = prev;
-            if (prev == null)
-                first = node.next;
-            else
-                prev.next = node.next;
-            size--;
+    private void removeNode(Node<E> node) {
+        final Node<E> next = node.next;
+        final Node<E> prev = node.prev;
+        if (prev == null) {
+            first = next;
         } else {
-            node.item = node.next.item;
-            node.next = node.prev.prev;
+            prev.next = next;
+            node.prev = null;
         }
-
-
+        if (next == null) {
+            last = prev;
+        } else {
+            next.prev = prev;
+            node.next = null;
+        }
+        node.item = null;
+        size--;
     }
 
-    public List<Task> test(){
-        List<Task> history = new ArrayList<>();
+    private List<Task> getTasks() {
+       final List<Task> history = new ArrayList<>();
         Node<E> taskNode = first;
-        while (taskNode != null){
+        while (taskNode != null) {
             history.add(taskNode.item);
             taskNode = taskNode.next;
         }
         return history;
     }
 }
-
-
-/* public List<Task> test(){
-        List<Task> history = new ArrayList<>();
-        Node<E> taskNode = first;
-        while (taskNode != null){
-            history.add(taskNode.item);
-            taskNode = taskNode.next;
-        }
-        return history;
-    }*/
