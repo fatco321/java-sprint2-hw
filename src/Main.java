@@ -6,7 +6,7 @@ import ru.yandex.practicum.tasktraker.util.Managers;
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager taskManager = Managers.getDefault();
+        InMemoryTaskManager taskManager = (InMemoryTaskManager) Managers.getDefault();
         Task task = new Task("Задача 1", "Описание 1", TaskStatus.NEW);
         Epic epic = new Epic("Эпик 1", "Описание 1");
         Subtask subtask = new Subtask("Подзадача 1", "Описание 1", TaskStatus.NEW, 2);
@@ -18,6 +18,7 @@ public class Main {
         taskManager.getEpic(2);
         System.out.println(taskManager.history());
         taskManager.getSubtask(3);
+        taskManager.remove(2);
         System.out.println(taskManager.history());
 
     }
