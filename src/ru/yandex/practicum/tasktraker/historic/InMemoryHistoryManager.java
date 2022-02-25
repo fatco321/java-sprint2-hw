@@ -7,12 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class InMemoryHistoryManager<E extends Task> implements HistoryManager {
     private final Map<Integer, Node<E>> nodesMap = new HashMap<>();
     private Node<E> first;
     private Node<E> last;
-    private int size = 0;
 
     @Override
     public void add(Task task) {
@@ -56,7 +54,6 @@ public class InMemoryHistoryManager<E extends Task> implements HistoryManager {
         else
             newLast.next = newNode;
         nodesMap.put(e.getId(), newNode);
-        size++;
         return newNode;
     }
 
@@ -76,7 +73,6 @@ public class InMemoryHistoryManager<E extends Task> implements HistoryManager {
             node.next = null;
         }
         node.item = null;
-        size--;
     }
 
     private List<Task> getTasks() {
