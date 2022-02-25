@@ -53,7 +53,6 @@ public class InMemoryHistoryManager<E extends Task> implements HistoryManager {
             first = newNode;
         else
             newLast.next = newNode;
-        nodesMap.put(e.getId(), newNode);
         return newNode;
     }
 
