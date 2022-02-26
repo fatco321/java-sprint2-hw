@@ -2,7 +2,6 @@ package ru.yandex.practicum.tasktraker.controller;
 
 import ru.yandex.practicum.tasktraker.tasks.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
@@ -16,7 +15,7 @@ public interface TaskManager {
     //получение Задачи
     Task getTask(int taskId);
 
-    //получения листа всех Задач
+    //получения списка всех Задач
     List<Task> getAllTask();
 
     //обновление(изменение) Задачи
@@ -34,7 +33,7 @@ public interface TaskManager {
     //получение Эпической задачи
     Epic getEpic(int epicId);
 
-    //получение листа всех Эпических задач
+    //получение списка всех Эпических задач
     List<Epic> getAllEpic();
 
     //обновление(изменение) Эпической задачи
@@ -55,10 +54,10 @@ public interface TaskManager {
     //обновление(изменение) Подзадачи
     void updateSubtask(int subtaskId, Subtask subtasNew);
 
-    //получение листа всех Подзадач конкретной Эпической задачи
+    //получение списка всех Подзадач конкретной Эпической задачи
     List<Subtask> getSubtasksByEpicId(int epicId);
 
-    //получение листа всех Подзадач
+    //получение списка всех Подзадач
     List<Subtask> getAllSubtask();
 
     //удаление Подзадачи
@@ -67,6 +66,6 @@ public interface TaskManager {
     //удаление всех Подзадач
     void deleteAllSubtask();
 
-    //получение листа истории
+    //получение списка истории
     List<Task> history();
 }

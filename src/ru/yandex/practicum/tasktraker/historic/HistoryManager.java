@@ -11,6 +11,6 @@ public interface HistoryManager {
     //удаление задачи из истории
     void remove(int id);
 
-    //получение листа историй
+    //получение списка историй
     List<Task> getHistory();
 }
