@@ -33,7 +33,7 @@ public class Task {
         this.taskDescription = taskDescription;
     }
 
-    TaskStatus getStatus() {
+    public TaskStatus getStatus() {
         return status;
     }
 
@@ -51,11 +51,8 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "taskName='" + taskName + '\'' +
-                ", taskDescription='" + taskDescription + '\'' +
-                ", status=" + status +
-                ", id=" + id +
-                '}';
+        return id + "," + TaskType.TASK + "," +
+                taskName + "," + status + "," + taskDescription;
     }
+
 }

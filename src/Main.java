@@ -6,12 +6,12 @@ public class Main {
 
     public static void main(String[] args) {
         TaskManager taskManager = Managers.getDefault();
-        Task task = new Task("Задача 1", "Описание 1", TaskStatus.NEW);
+        Task task = new Task("Задача 1", "Описание 1", TaskStatus.IN_PROGRESS);
         Task task1 = new Task("Задача 2", "Описание 2", TaskStatus.NEW);
         Epic epic = new Epic("Эпик 1", "Описание 1");
         Epic epic1 = new Epic("Эпик 2", "Описание 2");
         Task task2 = null;
-        Subtask subtask = new Subtask("Подзадача 1", "Описание 1", TaskStatus.NEW, 3);
+        Subtask subtask = new Subtask("Подзадача 1", "Описание 1", TaskStatus.DONE, 3);
         Subtask subtask1 = new Subtask("Подзадача 2", "Описание 2", TaskStatus.NEW, 3);
         Subtask subtask2 = new Subtask("Подзадача 3", "Описание 3", TaskStatus.NEW, 3);
         taskManager.addTask(task);
