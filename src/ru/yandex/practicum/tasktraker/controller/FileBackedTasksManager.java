@@ -12,6 +12,7 @@ import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager {
     private static List<String> taskListInCsv = writeCsvToArray();
+    private static File csvFile = new File("tasks.csv");
 
     public static void main(String[] args) {
         FileBackedTasksManager fileBacked = new FileBackedTasksManager();
@@ -33,7 +34,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     private void save() {
-        try (PrintWriter pw = new PrintWriter("tasks.csv", "Windows-1251")) {
+        try (PrintWriter pw = new PrintWriter(csvFile, "Windows-1251")) {
             pw.write("ID;TYPE;NAME;STATUS;DESCRIPTION;EPIC" + "\n");
             for (Task task : getAllTask()) {
                 pw.write(task.toString().replace(",", ";") + "\n");
@@ -62,6 +63,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
     public static FileBackedTasksManager loadFromFile(File file) {
         FileBackedTasksManager.taskListInCsv = FileBackedTasksManager.writeCsvToArray();
+        FileBackedTasksManager.setCsvFile(file);
         FileBackedTasksManager fileBack = new FileBackedTasksManager();
         taskListInCsv.remove(0);
         taskListInCsv.remove("HISTORY");
@@ -89,9 +91,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     private static List<String> writeCsvToArray() {
-        if (Files.exists(Path.of("tasks.csv"))) {
+        if (Files.exists(Path.of(String.valueOf(csvFile)))) {
             List<String> bufferList = new ArrayList<>();
-            try (BufferedReader br = new BufferedReader(new FileReader("tasks.csv",
+            try (BufferedReader br = new BufferedReader(new FileReader(csvFile,
                     Charset.forName("Windows-1251")))) {
                 while (br.ready()) {
                     bufferList.add(br.readLine());
@@ -131,6 +133,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             }
         }
         return null;
+    }
+
+    public static void setCsvFile(File csvFile) {
+        FileBackedTasksManager.csvFile = csvFile;
     }
 
     @Override
