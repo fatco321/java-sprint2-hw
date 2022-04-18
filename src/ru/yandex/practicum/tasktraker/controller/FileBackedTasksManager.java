@@ -5,29 +5,29 @@ import ru.yandex.practicum.tasktraker.tasks.*;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager {
-    private static final List<String> taskListInCsv = readCsvToArray();
-    private boolean loadFile = false;
-
-
+    private static List<String> taskListInCsv = writeCsvToArray();
 
     public static void main(String[] args) {
-        FileBackedTasksManager fb = new FileBackedTasksManager();
+        FileBackedTasksManager fileBacked = new FileBackedTasksManager();
         Task task = new Task("Задача 1", "Описание 1", TaskStatus.IN_PROGRESS);
         Task task1 = new Task("Задача 2", "Описание 2", TaskStatus.NEW);
         Epic epic = new Epic("Эпик 1", "Описание 1");
         Epic epic1 = new Epic("Эпик 2", "Описание 2");
         Subtask subtask = new Subtask("Подзадача 1", "Описание 1", TaskStatus.DONE, 3);
-        fb.addTask(task);
-        fb.addTask(task1);
-        fb.addEpic(epic);
-        fb.addSubtask(subtask);
-        fb.getTask(1);
-        fb.getEpic(3);
-        FileBackedTasksManager fileBackedTasksManager = FileBackedTasksManager.loadFromFile(new File("tasks.csv"));
+        fileBacked.addTask(task);
+        fileBacked.addTask(task1);
+        fileBacked.addEpic(epic);
+        fileBacked.addSubtask(subtask);
+        fileBacked.getTask(1);
+        fileBacked.getEpic(3);
+        FileBackedTasksManager fileBackedTasksManager = FileBackedTasksManager.loadFromFile(new File
+                ("tasks.csv"));
         fileBackedTasksManager.addEpic(epic1);
         fileBackedTasksManager.getEpic(5);
     }
@@ -61,52 +61,47 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     public static FileBackedTasksManager loadFromFile(File file) {
+        FileBackedTasksManager.taskListInCsv = FileBackedTasksManager.writeCsvToArray();
         FileBackedTasksManager fileBack = new FileBackedTasksManager();
-        List<String> taskInFile = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(file,
-                Charset.forName("Windows-1251")))) {
-            while (br.ready()) {
-                taskInFile.add(br.readLine());
-            }
-            taskInFile.remove(0);
-            taskInFile.remove("HISTORY");
-            for (String line : taskInFile) {
-                String[] split = line.split(";");
-                if (split.length >= 5) {
-                    if (split[1].equals("TASK")) {
-                        fileBack.addTask(fromString(Integer.parseInt(split[0])));
-                    } else if (split[1].equals("EPIC")) {
-                        fileBack.addEpic((Epic) fromString(Integer.parseInt(split[0])));
-                    } else {
-                        fileBack.addSubtask((Subtask) fromString(Integer.parseInt(split[0])));
-                    }
+        taskListInCsv.remove(0);
+        taskListInCsv.remove("HISTORY");
+        for (String line : taskListInCsv) {
+            String[] split = line.split(";");
+            if (split.length >= 5) {
+                if (split[1].equals("TASK")) {
+                    fileBack.addTask(fromString(Integer.parseInt(split[0])));
+                } else if (split[1].equals("EPIC")) {
+                    fileBack.addEpic((Epic) fromString(Integer.parseInt(split[0])));
+                } else {
+                    fileBack.addSubtask((Subtask) fromString(Integer.parseInt(split[0])));
                 }
             }
-            for (String line : taskInFile) {
-                String[] split = line.split(";");
-                if (split.length == 1) {
-                    fileBack.getTask(Integer.parseInt(split[0]));
-                    fileBack.getEpic(Integer.parseInt(split[0]));
-                    fileBack.getSubtask(Integer.parseInt(split[0]));
-                }
+        }
+        for (String line : taskListInCsv) {
+            String[] split = line.split(";");
+            if (split.length == 1) {
+                fileBack.getTask(Integer.parseInt(split[0]));
+                fileBack.getEpic(Integer.parseInt(split[0]));
+                fileBack.getSubtask(Integer.parseInt(split[0]));
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return fileBack;
     }
 
-    private static List<String> readCsvToArray() {
-        List<String> bufferList = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader("tasks.csv",
-                Charset.forName("Windows-1251")))) {
-            while (br.ready()) {
-                bufferList.add(br.readLine());
+    private static List<String> writeCsvToArray() {
+        if (Files.exists(Path.of("tasks.csv"))) {
+            List<String> bufferList = new ArrayList<>();
+            try (BufferedReader br = new BufferedReader(new FileReader("tasks.csv",
+                    Charset.forName("Windows-1251")))) {
+                while (br.ready()) {
+                    bufferList.add(br.readLine());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            return bufferList;
         }
-        return bufferList;
+        return null;
     }
 
     public static Task fromString(int id) {
