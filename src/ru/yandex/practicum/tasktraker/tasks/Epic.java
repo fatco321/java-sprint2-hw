@@ -2,6 +2,8 @@ package ru.yandex.practicum.tasktraker.tasks;
 
 import static ru.yandex.practicum.tasktraker.tasks.TaskStatus.*;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Epic extends Task {
@@ -44,6 +46,45 @@ public class Epic extends Task {
         } else if (sublist.isEmpty() || countNewStatus == sublist.size()) {
             setStatus(NEW);
         }
+    }
+
+    @Override
+    public LocalDateTime getStartTime() {
+        LocalDateTime startTime = LocalDateTime.MAX;
+        for (Subtask subtask : sublist) {
+            if (subtask.getStartTime() == null){
+                continue;
+            }
+            if (subtask.getStartTime() != null && startTime.isAfter(subtask.getStartTime())) {
+                startTime = subtask.getStartTime();
+            }
+        }
+        return startTime;
+    }
+
+    @Override
+    public LocalDateTime getEndTime() {
+        LocalDateTime endTime = LocalDateTime.MIN;
+        for (Subtask subtask : sublist) {
+            if (subtask.getEndTime() == null){
+                continue;
+            }
+            if (subtask.getEndTime() != null && endTime.isBefore(subtask.getEndTime())) {
+                endTime = subtask.getEndTime();
+            }
+        }
+        return endTime;
+    }
+
+    @Override
+    public Duration getDuration(){
+        Duration duration = Duration.ZERO;
+        for (Subtask subtask : sublist) {
+            if (subtask.getDuration() != null){
+                duration = duration.plus(subtask.getDuration());
+            }
+        }
+        return duration;
     }
 
     @Override

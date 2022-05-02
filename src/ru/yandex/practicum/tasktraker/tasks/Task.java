@@ -1,10 +1,15 @@
 package ru.yandex.practicum.tasktraker.tasks;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public class Task {
     private String taskName;
     private String taskDescription;
     private TaskStatus status = TaskStatus.NEW;
     private int id;
+    private Duration duration;
+    private LocalDateTime startTime;
 
     Task(String taskName, String taskDescription) {
         this.taskName = taskName;
@@ -15,6 +20,37 @@ public class Task {
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.status = status;
+    }
+
+    public Task(String taskName, String taskDescription, TaskStatus status, Duration duration, LocalDateTime startTime) {
+        this.taskName = taskName;
+        this.taskDescription = taskDescription;
+        this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        if (startTime == null){
+            return null;
+        }
+            return startTime.plus(duration);
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 
     public String getTaskName() {
@@ -45,7 +81,7 @@ public class Task {
         return id;
     }
 
-     public void setId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
