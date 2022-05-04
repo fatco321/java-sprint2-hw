@@ -22,19 +22,19 @@ public class Task {
         this.status = status;
     }
 
-    public Task(String taskName, String taskDescription, TaskStatus status, Duration duration, LocalDateTime startTime) {
+    public Task(String taskName, String taskDescription, TaskStatus status, LocalDateTime startTime, Duration duration) {
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.status = status;
-        this.duration = duration;
         this.startTime = startTime;
+        this.duration = duration;
     }
 
     public LocalDateTime getEndTime() {
-        if (startTime == null){
+        if (startTime == null) {
             return null;
         }
-            return startTime.plus(duration);
+        return startTime.plus(duration);
     }
 
     public Duration getDuration() {
@@ -88,7 +88,7 @@ public class Task {
     @Override
     public String toString() {
         return id + "," + TaskType.TASK + "," +
-                taskName + "," + status + "," + taskDescription;
+                taskName + "," + status + "," + taskDescription + "," + ";" + startTime + "," + duration + "," + getEndTime();
     }
 
 }

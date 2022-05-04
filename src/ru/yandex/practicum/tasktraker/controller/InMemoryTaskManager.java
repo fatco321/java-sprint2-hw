@@ -4,9 +4,7 @@ import ru.yandex.practicum.tasktraker.tasks.*;
 import ru.yandex.practicum.tasktraker.historic.*;
 import ru.yandex.practicum.tasktraker.util.Managers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
     private final HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
@@ -214,5 +212,20 @@ public class InMemoryTaskManager implements TaskManager {
 
     public HistoryManager getInMemoryHistoryManager() {
         return inMemoryHistoryManager;
+    }
+
+    public List<Task> getPrioritizedTasks() {
+        Comparator<Task> comparator = (task1, task2) -> {
+            if (task1.getStartTime() == null || task2.getStartTime() == null){
+                return 1;
+            } else {
+                return task2.getStartTime().compareTo(task1.getStartTime());
+            }
+        };
+        Set<Task> taskSet = new TreeSet<>(comparator);
+        taskSet.addAll(getAllTask());
+        taskSet.addAll(getAllEpic());
+        taskSet.addAll(getAllSubtask());
+        return new ArrayList<>(taskSet);
     }
 }

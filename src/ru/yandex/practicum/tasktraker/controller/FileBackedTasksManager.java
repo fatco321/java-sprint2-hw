@@ -7,6 +7,8 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,11 +18,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
     public static void main(String[] args) {
         FileBackedTasksManager fileBacked = new FileBackedTasksManager();
-        Task task = new Task("Задача 1", "Описание 1", TaskStatus.IN_PROGRESS);
+        Task task = new Task("Задача 1", "Описание 1", TaskStatus.IN_PROGRESS,
+                LocalDateTime.of(2022, 2, 3, 11, 22), Duration.ofDays(2));
         Task task1 = new Task("Задача 2", "Описание 2", TaskStatus.NEW);
         Epic epic = new Epic("Эпик 1", "Описание 1");
         Epic epic1 = new Epic("Эпик 2", "Описание 2");
-        Subtask subtask = new Subtask("Подзадача 1", "Описание 1", TaskStatus.DONE, 3);
+        Subtask subtask = new Subtask("Подзадача 1", "Описание 1", TaskStatus.DONE, 3,
+                LocalDateTime.now(), Duration.ofDays(4));
         fileBacked.addTask(task);
         fileBacked.addTask(task1);
         fileBacked.addEpic(epic);
@@ -31,24 +35,21 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                 ("tasks.csv"));
         fileBackedTasksManager.addEpic(epic1);
         fileBackedTasksManager.getEpic(5);
+        Subtask subtask1 = new Subtask("Подзадача 2", "Описание 2", TaskStatus.DONE, 3,
+                LocalDateTime.of(2022, 5, 6, 5, 2), Duration.ofDays(4));
+        fileBackedTasksManager.addSubtask(subtask1);
     }
 
     private void save() {
         try (PrintWriter pw = new PrintWriter(csvFile, "Windows-1251")) {
-            pw.write("ID;TYPE;NAME;STATUS;DESCRIPTION;EPIC" + "\n");
+            pw.write("ID;TYPE;NAME;STATUS;DESCRIPTION;EPIC;StartTime;Duration;EndTime" + "\n");
             for (Task task : getAllTask()) {
                 pw.write(task.toString().replace(",", ";") + "\n");
             }
-            for (Task epic : getAllEpic()) {
-                String[] split = epic.toString().split(",");
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < 5; i++) {
-                    sb.append(split[i]);
-                    sb.append(";");
-                }
-                pw.write(sb + "\n");
+            for (Epic epic : getAllEpic()) {
+                pw.write(epic.toString().replace(",", ";") + "\n");
             }
-            for (Task subtask : getAllSubtask()) {
+            for (Subtask subtask : getAllSubtask()) {
                 pw.write(subtask.toString().replace(",", ";") + "\n");
             }
             pw.write("HISTORY" + "\n");
@@ -117,11 +118,19 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                             case TASK:
                                 Task task = new Task(split[2], split[4], TaskStatus.valueOf(split[3]));
                                 task.setId(id);
+                                if (!split[6].equals("null")) {
+                                    task.setStartTime(LocalDateTime.parse(split[6]));
+                                    task.setDuration(Duration.parse(split[7]));
+                                }
                                 return task;
                             case SUBTASK:
                                 int epicId = Integer.parseInt(split[5].substring(9));
                                 Subtask subtask = new Subtask(split[2], split[4], TaskStatus.valueOf(split[3]), epicId);
                                 subtask.setId(id);
+                                if (!split[6].equals("null")) {
+                                    subtask.setStartTime(LocalDateTime.parse(split[6]));
+                                    subtask.setDuration(Duration.parse(split[7]));
+                                }
                                 return subtask;
                             case EPIC:
                                 Epic epic = new Epic(split[2], split[4]);
@@ -172,10 +181,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     @Override
-    public Subtask getSubtask(int sabtaskId) {
-        super.getSubtask(sabtaskId);
+    public Subtask getSubtask(int subtaskId) {
+        super.getSubtask(subtaskId);
         save();
-        return super.getSubtask(sabtaskId);
+        return super.getSubtask(subtaskId);
     }
 
     @Override
@@ -215,8 +224,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     @Override
-    public void updateSubtask(int subtaskId, Subtask subtasNew) {
-        super.updateSubtask(subtaskId, subtasNew);
+    public void updateSubtask(int subtaskId, Subtask subtaskNew) {
+        super.updateSubtask(subtaskId, subtaskNew);
         save();
     }
 

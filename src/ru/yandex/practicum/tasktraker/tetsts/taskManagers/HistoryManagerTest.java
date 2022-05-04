@@ -44,7 +44,7 @@ public class HistoryManagerTest {
     }
 
     @Test
-    void test3_ShouldDeleteInHistoryMiddle(){
+    void test4_ShouldDeleteInHistoryMiddle(){
         taskManager.addTask(task);
         taskManager.addEpic(epic);
         taskManager.addSubtask(subtask);
@@ -56,7 +56,7 @@ public class HistoryManagerTest {
     }
 
     @Test
-    void test3_ShouldDeleteInHistoryEnd(){
+    void test5_ShouldDeleteInHistoryEnd(){
         taskManager.addTask(task);
         taskManager.addEpic(epic);
         taskManager.addSubtask(subtask);
