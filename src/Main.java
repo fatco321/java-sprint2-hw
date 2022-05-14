@@ -19,7 +19,7 @@ public class Main {
         Subtask subtask1 = new Subtask("Подзадача 2", "Описание 2", TaskStatus.NEW, 1,
                  LocalDateTime.of(2022, Month.APRIL, 29, 0, 0),Duration.ofDays(7));
         Subtask subtask2 = new Subtask("Подзадача 3", "Описание 3", TaskStatus.NEW, 1);
-        /*taskManager.addTask(task);
+        taskManager.addTask(task);
         taskManager.addTask(task1);
         taskManager.addEpic(epic);
         taskManager.addEpic(epic1);
@@ -43,7 +43,7 @@ public class Main {
         taskManager.deleteSubtask(5);
         System.out.println(taskManager.history());
         taskManager.deleteEpic(3);
-        System.out.println(taskManager.history());*/
+        System.out.println(taskManager.history());
         taskManager.addEpic(epic);
         taskManager.addSubtask(subtask);
         taskManager.addSubtask(subtask1);

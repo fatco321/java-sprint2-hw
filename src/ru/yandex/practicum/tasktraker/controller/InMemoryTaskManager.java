@@ -4,7 +4,9 @@ import ru.yandex.practicum.tasktraker.tasks.*;
 import ru.yandex.practicum.tasktraker.historic.*;
 import ru.yandex.practicum.tasktraker.util.Managers;
 
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.Predicate;
 
 public class InMemoryTaskManager implements TaskManager {
     private final HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
@@ -12,6 +14,13 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Epic> epicHashMap = new HashMap<>();
     private final HashMap<Integer, Subtask> subtaskHashMap = new HashMap<>();
     private int id = 0;
+    private final Set<Task> taskTreeSet = new TreeSet<>((o1, o2) -> {
+        if (o1.getStartTime() == null || o2.getStartTime() == null){
+            return 1;
+        } else {
+            return o2.getStartTime().compareTo(o1.getStartTime());
+        }
+    });
 
     @Override
     public void setId() {
@@ -223,9 +232,17 @@ public class InMemoryTaskManager implements TaskManager {
             }
         };
         Set<Task> taskSet = new TreeSet<>(comparator);
-        taskSet.addAll(getAllTask());
-        taskSet.addAll(getAllEpic());
-        taskSet.addAll(getAllSubtask());
-        return new ArrayList<>(taskSet);
+        taskTreeSet.addAll(getAllTask());
+        taskTreeSet.addAll(getAllEpic());
+        taskTreeSet.addAll(getAllSubtask());
+        return new ArrayList<>(taskTreeSet);
+    }
+
+    private final Predicate<Task>  intersection = newTask -> {
+        LocalDateTime taskStartTime = newTask.getStartTime();
+        LocalDateTime taskEndTime = newTask.getEndTime();
+        if (newTask.getStartTime() == null){
+            return false;
+        }
     }
 }

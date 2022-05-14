@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TaskManager {
 
-    //увелечение ID при добавлении задачи
+    //увеличение ID при добавлении задачи
     void setId();
 
     //добавление Задачи
@@ -27,7 +27,7 @@ public interface TaskManager {
     //удаление всех Задач
     void deleteAllTask();
 
-    //доавбление Эпической задачи
+    //добавление Эпической задачи
     void addEpic(Epic epic);
 
     //получение Эпической задачи

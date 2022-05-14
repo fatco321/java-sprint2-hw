@@ -38,6 +38,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         Subtask subtask1 = new Subtask("Подзадача 2", "Описание 2", TaskStatus.DONE, 3,
                 LocalDateTime.of(2022, 5, 6, 5, 2), Duration.ofDays(4));
         fileBackedTasksManager.addSubtask(subtask1);
+        System.out.println(fileBackedTasksManager.getPrioritizedTasks());
     }
 
     private void save() {
