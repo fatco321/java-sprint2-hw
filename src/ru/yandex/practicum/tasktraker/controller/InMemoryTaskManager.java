@@ -15,7 +15,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Subtask> subtaskHashMap = new HashMap<>();
     private int id = 0;
     private final Set<Task> taskTreeSet = new TreeSet<>((o1, o2) -> {
-        if (o1.getStartTime() == null || o2.getStartTime() == null){
+        if (o1.getStartTime() == null || o2.getStartTime() == null) {
             return 1;
         } else {
             return o2.getStartTime().compareTo(o1.getStartTime());
@@ -31,9 +31,12 @@ public class InMemoryTaskManager implements TaskManager {
     public void addTask(Task task) {
         if (task == null)
             return;
-        setId();
-        task.setId(id);
-        taskHashMap.put(id, task);
+        if (noIntersection.test(task)) {
+            setId();
+            task.setId(id);
+            taskHashMap.put(id, task);
+            taskTreeSet.add(task);
+        }
     }
 
     @Override
@@ -145,6 +148,8 @@ public class InMemoryTaskManager implements TaskManager {
         setId();
         subtask.setId(id);
         subtaskHashMap.put(id, subtask);
+        taskTreeSet.add(subtask);
+        taskTreeSet.add(epicHashMap.get(subtask.getEpicId()));
     }
 
     private void putSubtaskInEpic(Subtask subtask) {
@@ -223,26 +228,30 @@ public class InMemoryTaskManager implements TaskManager {
         return inMemoryHistoryManager;
     }
 
-    public List<Task> getPrioritizedTasks() {
-        Comparator<Task> comparator = (task1, task2) -> {
-            if (task1.getStartTime() == null || task2.getStartTime() == null){
-                return 1;
-            } else {
-                return task2.getStartTime().compareTo(task1.getStartTime());
-            }
-        };
-        Set<Task> taskSet = new TreeSet<>(comparator);
-        taskTreeSet.addAll(getAllTask());
-        taskTreeSet.addAll(getAllEpic());
-        taskTreeSet.addAll(getAllSubtask());
-        return new ArrayList<>(taskTreeSet);
+    public Set<Task> getPrioritizedTasks() {
+        return taskTreeSet;
     }
 
-    private final Predicate<Task>  intersection = newTask -> {
-        LocalDateTime taskStartTime = newTask.getStartTime();
-        LocalDateTime taskEndTime = newTask.getEndTime();
-        if (newTask.getStartTime() == null){
-            return false;
+    private final Predicate<Task> noIntersection = newTask -> {
+        if (newTask.getStartTime() == null) {
+            return true;
         }
-    }
+        LocalDateTime newTaskStart = newTask.getStartTime();
+        LocalDateTime newTaskFinish = newTask.getEndTime();
+        for (Task task : taskTreeSet) {
+            LocalDateTime taskStart = task.getStartTime();
+            LocalDateTime taskFinish = task.getEndTime();
+            if (newTaskStart.isBefore(taskStart) && newTaskFinish.isAfter(taskStart)) {
+                return false;
+            }
+            if (newTaskStart.isBefore(taskFinish) && newTaskFinish.isAfter(taskFinish)) {
+                return false;
+            }
+            if ((newTaskStart.isBefore(taskStart) && newTaskFinish.isBefore(taskStart)) &&
+                    (newTaskStart.isBefore(taskFinish) && newTaskFinish.isBefore(taskFinish))) {
+                break;
+            }
+        }
+        return true;
+    };
 }

@@ -10,13 +10,13 @@ import ru.yandex.practicum.tasktraker.tasks.TaskStatus;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class HistoryManagerTest {
-    InMemoryTaskManager taskManager = new InMemoryTaskManager();
+    private InMemoryTaskManager taskManager = new InMemoryTaskManager();
     Task task = new Task("Task_Test", "Test", TaskStatus.NEW);
     Epic epic = new Epic("Epic_Test", "Test");
     Subtask subtask = new Subtask("Subtask_Test", "Test", TaskStatus.NEW, 2);
 
     @Test
-    void test1_ShouldGetEmptyHistory(){
+    void test1_ShouldGetEmptyHistory() {
         assertTrue(taskManager.history().isEmpty());
     }
 
@@ -44,7 +44,7 @@ public class HistoryManagerTest {
     }
 
     @Test
-    void test4_ShouldDeleteInHistoryMiddle(){
+    void test4_ShouldDeleteInHistoryMiddle() {
         taskManager.addTask(task);
         taskManager.addEpic(epic);
         taskManager.addSubtask(subtask);
@@ -56,7 +56,7 @@ public class HistoryManagerTest {
     }
 
     @Test
-    void test5_ShouldDeleteInHistoryEnd(){
+    void test5_ShouldDeleteInHistoryEnd() {
         taskManager.addTask(task);
         taskManager.addEpic(epic);
         taskManager.addSubtask(subtask);

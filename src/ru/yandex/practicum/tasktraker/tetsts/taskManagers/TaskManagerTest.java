@@ -228,22 +228,22 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void test27_getHistory(){
+    void test27_getHistory() {
         manager.addEpic(epic);
         manager.addSubtask(subtask);
         manager.addTask(task);
         manager.getTask(3);
         manager.getEpic(1);
         manager.getSubtask(2);
-        assertEquals(3,manager.history().size());
+        assertEquals(3, manager.history().size());
     }
 
     @Test
-    void test28_getHistoryWithInCorrectedTasks(){
+    void test28_getHistoryWithInCorrectedTasks() {
         manager.addEpic(epic);
         manager.addSubtask(subtask);
         manager.getEpic(1);
         manager.getSubtask(55);
-        assertEquals(1,manager.history().size());
+        assertEquals(1, manager.history().size());
     }
 }

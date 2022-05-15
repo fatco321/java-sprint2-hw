@@ -10,10 +10,14 @@ import java.io.PrintWriter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FileBackedTasksManagerTest {
-    FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager();
+public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager> {
+    private FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager();
 
-      @Test
+    public FileBackedTasksManagerTest(FileBackedTasksManager fileBackedTasksManager) {
+        setManager(new FileBackedTasksManager());
+    }
+
+    @Test
     void test1_ShouldLoadWithEmptyListExceptions() throws IOException {
         File file = new File("tasksTest.csv");
         PrintWriter pw = new PrintWriter(file);
@@ -26,7 +30,7 @@ public class FileBackedTasksManagerTest {
                     pw.write("ID;TYPE;NAME;STATUS;DESCRIPTION;EPIC" + "\n");
                     pw.write("\n" + "HISTORY");
                     pw.close();
-                 FileBackedTasksManager fileBackedTasksManager1 = FileBackedTasksManager.loadFromFile(new File("tasksTest.csv"));
+                    FileBackedTasksManager fileBackedTasksManager1 = FileBackedTasksManager.loadFromFile(new File("tasksTest.csv"));
                 }
         );
         assertNull(exception.getMessage());

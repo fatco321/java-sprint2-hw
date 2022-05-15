@@ -36,9 +36,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         fileBackedTasksManager.addEpic(epic1);
         fileBackedTasksManager.getEpic(5);
         Subtask subtask1 = new Subtask("Подзадача 2", "Описание 2", TaskStatus.DONE, 3,
-                LocalDateTime.of(2022, 5, 6, 5, 2), Duration.ofDays(4));
+                LocalDateTime.of(2012, 5, 6, 5, 2), Duration.ofDays(4));
         fileBackedTasksManager.addSubtask(subtask1);
-        System.out.println(fileBackedTasksManager.getPrioritizedTasks());
     }
 
     private void save() {
@@ -116,7 +115,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                     int targetId = Integer.parseInt(split[0]);
                     if (targetId == id) {
                         switch (TaskType.valueOf(split[1])) {
-                            case TASK:
+                            case TASK -> {
                                 Task task = new Task(split[2], split[4], TaskStatus.valueOf(split[3]));
                                 task.setId(id);
                                 if (!split[6].equals("null")) {
@@ -124,7 +123,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                                     task.setDuration(Duration.parse(split[7]));
                                 }
                                 return task;
-                            case SUBTASK:
+                            }
+                            case SUBTASK -> {
                                 int epicId = Integer.parseInt(split[5].substring(9));
                                 Subtask subtask = new Subtask(split[2], split[4], TaskStatus.valueOf(split[3]), epicId);
                                 subtask.setId(id);
@@ -133,10 +133,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                                     subtask.setDuration(Duration.parse(split[7]));
                                 }
                                 return subtask;
-                            case EPIC:
+                            }
+                            case EPIC -> {
                                 Epic epic = new Epic(split[2], split[4]);
                                 epic.setId(id);
                                 return epic;
+                            }
                         }
                     }
                 }
