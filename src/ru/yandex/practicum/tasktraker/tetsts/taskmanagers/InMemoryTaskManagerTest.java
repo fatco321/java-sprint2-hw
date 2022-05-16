@@ -1,4 +1,4 @@
-package taskManagers;
+package taskmanagers;
 
 import ru.yandex.practicum.tasktraker.controller.InMemoryTaskManager;
 

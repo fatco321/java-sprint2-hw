@@ -1,4 +1,4 @@
-package taskManagers;
+package taskmanagers;
 
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.tasktraker.controller.TaskManager;

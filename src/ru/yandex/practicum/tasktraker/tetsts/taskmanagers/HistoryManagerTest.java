@@ -1,4 +1,4 @@
-package taskManagers;
+package taskmanagers;
 
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.tasktraker.controller.InMemoryTaskManager;
@@ -11,9 +11,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class HistoryManagerTest {
     private InMemoryTaskManager taskManager = new InMemoryTaskManager();
-    Task task = new Task("Task_Test", "Test", TaskStatus.NEW);
-    Epic epic = new Epic("Epic_Test", "Test");
-    Subtask subtask = new Subtask("Subtask_Test", "Test", TaskStatus.NEW, 2);
+    private Task task = new Task("Task_Test", "Test", TaskStatus.NEW);
+    private Epic epic = new Epic("Epic_Test", "Test");
+    private Subtask subtask = new Subtask("Subtask_Test", "Test", TaskStatus.NEW, 2);
 
     @Test
     void test1_ShouldGetEmptyHistory() {
