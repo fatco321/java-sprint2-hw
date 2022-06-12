@@ -39,3 +39,8 @@ hs_err_pid*
 
 # IntelliJ
 /out/
+/.idea/
+/src/tasksaves/
+/src/tests/taskManagers/taskSaveTest.csv
+/src/tests/taskManagers/taskSaveTestByEmptyTaskList.csv
+/src/tests/taskManagers/taskSaveTestByEpicWithoutSubtasks.csv
