@@ -40,7 +40,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         fileBackedTasksManager.addSubtask(subtask1);
     }
 
-    private void save() {
+    protected void save() {
         try (PrintWriter pw = new PrintWriter(csvFile, "Windows-1251")) {
             pw.write("ID;TYPE;NAME;STATUS;DESCRIPTION;EPIC;StartTime;Duration;EndTime" + "\n");
             for (Task task : getAllTask()) {

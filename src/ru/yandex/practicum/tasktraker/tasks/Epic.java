@@ -5,12 +5,14 @@ import static ru.yandex.practicum.tasktraker.tasks.TaskStatus.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Epic extends Task {
     private ArrayList<Subtask> sublist = new ArrayList<>();
 
     public Epic(String taskName, String taskDescription) {
         super(taskName, taskDescription);
+        super.setType(TaskType.EPIC);
     }
 
     public ArrayList<Subtask> getSublist() {
@@ -103,5 +105,17 @@ public class Epic extends Task {
                 getDuration() + "," + getEndTime();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Epic)) return false;
+        if (!super.equals(o)) return false;
+        Epic epic = (Epic) o;
+        return Objects.equals(sublist, epic.sublist);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), sublist);
+    }
 }

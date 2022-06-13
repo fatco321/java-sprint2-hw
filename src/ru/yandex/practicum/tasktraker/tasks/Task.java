@@ -2,11 +2,13 @@ package ru.yandex.practicum.tasktraker.tasks;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Task {
     private String taskName;
     private String taskDescription;
     private TaskStatus status = TaskStatus.NEW;
+    private  TaskType type;
     private int id;
     private Duration duration;
     private LocalDateTime startTime;
@@ -14,12 +16,14 @@ public class Task {
     Task(String taskName, String taskDescription) {
         this.taskName = taskName;
         this.taskDescription = taskDescription;
+        this.type = TaskType.TASK;
     }
 
     public Task(String taskName, String taskDescription, TaskStatus status) {
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.status = status;
+        this.type = TaskType.TASK;
     }
 
     public Task(String taskName, String taskDescription, TaskStatus status, LocalDateTime startTime, Duration duration) {
@@ -28,6 +32,7 @@ public class Task {
         this.status = status;
         this.startTime = startTime;
         this.duration = duration;
+        this.type = TaskType.TASK;
     }
 
     public LocalDateTime getEndTime() {
@@ -35,6 +40,14 @@ public class Task {
             return null;
         }
         return startTime.plus(duration);
+    }
+
+    public TaskType getType() {
+        return type;
+    }
+
+    public void setType(TaskType type) {
+        this.type = type;
     }
 
     public Duration getDuration() {
@@ -91,4 +104,16 @@ public class Task {
                 taskName + "," + status + "," + taskDescription + "," + ";" + startTime + "," + duration + "," + getEndTime();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Task)) return false;
+        Task task = (Task) o;
+        return id == task.id && taskName.equals(task.taskName) && taskDescription.equals(task.taskDescription) && status == task.status && type == task.type && Objects.equals(duration, task.duration) && Objects.equals(startTime, task.startTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(taskName, taskDescription, status, type, id, duration, startTime);
+    }
 }

@@ -10,9 +10,9 @@ import java.util.function.Predicate;
 
 public class InMemoryTaskManager implements TaskManager {
     private final HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
-    private final HashMap<Integer, Task> taskHashMap = new HashMap<>();
-    private final HashMap<Integer, Epic> epicHashMap = new HashMap<>();
-    private final HashMap<Integer, Subtask> subtaskHashMap = new HashMap<>();
+    private  HashMap<Integer, Task> taskHashMap = new HashMap<>();
+    private  HashMap<Integer, Epic> epicHashMap = new HashMap<>();
+    private  HashMap<Integer, Subtask> subtaskHashMap = new HashMap<>();
     private int id = 0;
     private final Set<Task> taskTreeSet = new TreeSet<>((o1, o2) -> {
         if (o1.getStartTime() == null || o2.getStartTime() == null) {
@@ -254,4 +254,32 @@ public class InMemoryTaskManager implements TaskManager {
         }
         return true;
     };
+
+    public HashMap<Integer, Task> getTaskHashMap() {
+        return taskHashMap;
+    }
+
+    public void setTaskHashMap(HashMap<Integer, Task> taskHashMap) {
+        this.taskHashMap = taskHashMap;
+    }
+
+    public HashMap<Integer, Epic> getEpicHashMap() {
+        return epicHashMap;
+    }
+
+    public void setEpicHashMap(HashMap<Integer, Epic> epicHashMap) {
+        this.epicHashMap = epicHashMap;
+    }
+
+    public HashMap<Integer, Subtask> getSubtaskHashMap() {
+        return subtaskHashMap;
+    }
+
+    public void setSubtaskHashMap(HashMap<Integer, Subtask> subtaskHashMap) {
+        this.subtaskHashMap = subtaskHashMap;
+    }
+
+    public HistoryManager getHistoryManager(){
+        return inMemoryHistoryManager;
+    }
 }
