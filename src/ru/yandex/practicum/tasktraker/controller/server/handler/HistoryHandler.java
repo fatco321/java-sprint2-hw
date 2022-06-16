@@ -32,7 +32,7 @@ public class HistoryHandler implements HttpHandler {
             code = 400;
             response = gson.toJson(e);
         } finally {
-            getResponse(exchange, response, code);
+            responseFromServer(exchange, response, code);
         }
     }
 
@@ -40,7 +40,7 @@ public class HistoryHandler implements HttpHandler {
         return gson.toJson(taskManager.history());
     }
 
-    private void getResponse(HttpExchange exchange, String response, int code) {
+    private void responseFromServer(HttpExchange exchange, String response, int code) {
         try (OutputStream outputStream = exchange.getResponseBody()) {
             exchange.sendResponseHeaders(code, 0);
             outputStream.write(response.getBytes(StandardCharsets.UTF_8));

@@ -32,7 +32,7 @@ public class SubtaskHandler implements HttpHandler {
         try {
             String method = exchange.getRequestMethod();
             switch (method) {
-                case "GET" -> response = getResponse(exchange);
+                case "GET" -> response = responseFromServer(exchange);
                 case "POST" -> postSubtaskRequest(exchange);
                 case "DELETE" -> deleteSubtaskRequest(exchange);
             }
@@ -42,11 +42,11 @@ public class SubtaskHandler implements HttpHandler {
             code = 400;
             response = gson.toJson(e);
         } finally {
-            getResponse(exchange, response, code);
+            responseFromServer(exchange, response, code);
         }
     }
 
-    private void getResponse(HttpExchange exchange, String response, int code) {
+    private void responseFromServer(HttpExchange exchange, String response, int code) {
         try (OutputStream outputStream = exchange.getResponseBody()) {
             exchange.sendResponseHeaders(code, 0);
             outputStream.write(response.getBytes(StandardCharsets.UTF_8));
@@ -55,7 +55,7 @@ public class SubtaskHandler implements HttpHandler {
         }
     }
 
-    private String getResponse(HttpExchange exchange) {
+    private String responseFromServer(HttpExchange exchange) {
         URI uri = exchange.getRequestURI();
         String query = exchange.getRequestURI().getQuery();
         int id;

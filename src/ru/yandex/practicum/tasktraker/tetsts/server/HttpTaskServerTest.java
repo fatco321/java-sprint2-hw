@@ -47,7 +47,7 @@ public class HttpTaskServerTest {
         manager.addSubtask(subtask);
         manager.addTask(task);
         client = HttpClient.newHttpClient();
-        HttpTaskServer server = new HttpTaskServer(manager);
+        HttpTaskServer server = new HttpTaskServer();
         server.start();
     }
 

@@ -10,6 +10,7 @@ import ru.yandex.practicum.tasktraker.controller.server.handler.EpicHandler;
 import ru.yandex.practicum.tasktraker.controller.server.handler.HistoryHandler;
 import ru.yandex.practicum.tasktraker.controller.server.handler.SubtaskHandler;
 import ru.yandex.practicum.tasktraker.controller.server.handler.TaskHandler;
+import ru.yandex.practicum.tasktraker.util.Managers;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -20,10 +21,10 @@ public class HttpTaskServer {
     private TaskManager taskManager;
     private Gson gson;
     private HttpServer httpServer;
-    private int PORT = 8080;
+    private static final int PORT = 8080;
 
-    public HttpTaskServer(TaskManager manager) throws IOException {
-        this.taskManager = manager;
+    public HttpTaskServer() throws IOException {
+        this.taskManager = Managers.getDefault();
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(Duration.class, new DurationAdapter())
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())

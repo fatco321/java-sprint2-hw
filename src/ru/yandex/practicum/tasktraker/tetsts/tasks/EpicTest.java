@@ -1,4 +1,4 @@
-package ru.yandex.practicum.tasktraker.tetsts.tasks;
+package tasks;
 
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.tasktraker.controller.*;
@@ -7,10 +7,10 @@ import ru.yandex.practicum.tasktraker.tasks.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class EpicTest {
-    InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
-    Subtask subtask = new Subtask("Subtask-1", "0", TaskStatus.NEW, 1);
-    Subtask subtask1 = new Subtask("Subtask-1", "0", TaskStatus.NEW, 1);
-    Epic epic = new Epic("Epic_TEST", "TEST");
+    private InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
+    private Subtask subtask = new Subtask("Subtask-1", "0", TaskStatus.NEW, 1);
+    private Subtask subtask1 = new Subtask("Subtask-1", "0", TaskStatus.NEW, 1);
+    private Epic epic = new Epic("Epic_TEST", "TEST");
 
     @Test
     void test1_ShoulEpicStattusWithOutSubtasks() {
@@ -27,7 +27,7 @@ class EpicTest {
     }
 
     @Test
-    void test3_EpicStatusWithSubtasksDone(){
+    void test3_EpicStatusWithSubtasksDone() {
         inMemoryTaskManager.addEpic(epic);
         subtask.setStatus(TaskStatus.DONE);
         subtask1.setStatus(TaskStatus.DONE);
@@ -37,7 +37,7 @@ class EpicTest {
     }
 
     @Test
-    void test4_EpicStatusWithSubtasksNewAndDone(){
+    void test4_EpicStatusWithSubtasksNewAndDone() {
         inMemoryTaskManager.addEpic(epic);
         subtask1.setStatus(TaskStatus.DONE);
         inMemoryTaskManager.addSubtask(subtask);
@@ -46,7 +46,7 @@ class EpicTest {
     }
 
     @Test
-    void test5_EpicStatusWithSubtasksInProgress(){
+    void test5_EpicStatusWithSubtasksInProgress() {
         inMemoryTaskManager.addEpic(epic);
         subtask.setStatus(TaskStatus.IN_PROGRESS);
         subtask1.setStatus(TaskStatus.IN_PROGRESS);
