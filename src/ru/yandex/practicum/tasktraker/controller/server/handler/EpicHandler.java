@@ -32,7 +32,7 @@ public class EpicHandler implements HttpHandler {
         try {
             String method = exchange.getRequestMethod();
             switch (method) {
-                case "GET" -> response = responseFromServer(exchange);
+                case "GET" -> response = getRequest(exchange);
                 case "POST" -> postEpicRequest(exchange);
                 case "DELETE" -> deleteEpicRequest(exchange);
             }
@@ -42,11 +42,11 @@ public class EpicHandler implements HttpHandler {
             code = 400;
             response = gson.toJson(e);
         } finally {
-            responseFromServer(exchange, response, code);
+            handleResponse(exchange, response, code);
         }
     }
 
-    private void responseFromServer(HttpExchange exchange, String response, int code) {
+    private void handleResponse(HttpExchange exchange, String response, int code) {
         try (OutputStream outputStream = exchange.getResponseBody()) {
             exchange.sendResponseHeaders(code, 0);
             outputStream.write(response.getBytes(StandardCharsets.UTF_8));
@@ -55,7 +55,7 @@ public class EpicHandler implements HttpHandler {
         }
     }
 
-    private String responseFromServer(HttpExchange exchange) {
+    private String getRequest(HttpExchange exchange) {
         URI uri = exchange.getRequestURI();
         String query = exchange.getRequestURI().getQuery();
         int id;
